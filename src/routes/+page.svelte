@@ -541,122 +541,142 @@
 
 <svelte:window onpointermove={handlePointerMove} onpointerup={handlePointerUp} />
 
-<main class="mx-auto w-fit select-none font-mono sm:pt-12 {isDragging ? 'cursor-grabbing' : ''}">
-	<!-- Header -->
-	<div class="flex justify-center gap-2 px-4 py-4 sm:px-0">
-		<div class="flex flex-1 select-auto items-end">
-			<p>Kubel.io</p>
-		</div>
-		<div
-			class="relative flex h-14 min-w-14 shrink-0 items-center justify-center border bg-muted p-4 text-4xl font-bold
+<main class="flex min-h-svh flex-col">
+	<div class="mx-auto w-fit select-none font-mono sm:pt-12 {isDragging ? 'cursor-grabbing' : ''}">
+		<!-- Header -->
+		<div class="flex justify-center gap-2 px-4 py-4 sm:px-0">
+			<div class="flex flex-1 select-auto items-end">
+				<p>Kubel.io</p>
+			</div>
+			<div
+				class="relative flex h-14 min-w-14 shrink-0 items-center justify-center border bg-muted p-4 text-4xl font-bold
 			{!moveCount ? 'text-muted-foreground' : 'text-foreground'} 
 			{hasWon ? 'bg-green-500 text-white' : ''}"
-		>
-			{moveCount}
-			{#if (isDragging && moveOffset.x !== 0) || moveOffset.y !== 0}
-				<span
-					class="absolute bottom-0.5 right-0.5 text-xs font-thin leading-none text-muted-foreground"
-					>+1</span
-				>
-			{/if}
-		</div>
-
-		<div class="flex flex-1 items-end justify-end gap-2">
-			{#if moveCount > 0 && !hasWon}
-				<Button
-					size="sm"
-					variant="outline"
-					onclick={() => initBoard(true)}
-					class="font-semibold text-muted-foreground"
-				>
-					Reset
-				</Button>
-			{/if}
-			<Dialog.Root bind:open={openHelp}>
-				<Dialog.Trigger>
-					{#snippet child({ props })}
-						<Button
-							size="sm"
-							{...props}
-							variant="outline"
-							class="font-semibold text-muted-foreground"
-						>
-							?
-						</Button>
-					{/snippet}
-				</Dialog.Trigger>
-				<Dialog.Content class="font-mono sm:max-w-80">
-					<Logo class="mx-auto size-8" />
-					<Dialog.Header class="sm:text-center">
-						<Dialog.Title>Kubel</Dialog.Title>
-						<Dialog.Description>The 2D rubik's cube daily challenge</Dialog.Description>
-					</Dialog.Header>
-					<div class="text-center">
-						<p class="font-sans">
-							Click and drag the pieces to move them. Win the game by moving all the pieces of the
-							same color next to each other. Use as few moves as possible.
-						</p>
-						<br />
-						<p class="font-sans">New puzzle every day!</p>
-					</div>
-					<Button class="w-full font-bold" onclick={() => (openHelp = false)}>PLAY</Button>
-				</Dialog.Content>
-			</Dialog.Root>
-		</div>
-	</div>
-
-	<!-- Board -->
-	<div
-		class="mx-auto aspect-square w-full max-w-sm sm:size-96
-		{!isDragging && !hasWon ? 'cursor-grab' : ''}"
-	>
-		<canvas class="size-full select-none" bind:this={canvas}></canvas>
-	</div>
-
-	<!-- Winner -->
-	{#if hasWon}
-		<div class="mt-4 bg-green-500 px-4 py-2 sm:px-0">
-			<p class="text-center text-2xl font-bold text-white">Winner!</p>
-		</div>
-		<div class="flex">
-			<Button
-				size="sm"
-				onclick={() => initBoard(true)}
-				variant="outline"
-				class="focus-visible:z-10"
 			>
-				Go Again
-			</Button>
-			{#if navigator.clipboard}
+				{moveCount}
+				{#if (isDragging && moveOffset.x !== 0) || moveOffset.y !== 0}
+					<span
+						class="absolute bottom-0.5 right-0.5 text-xs font-thin leading-none text-muted-foreground"
+						>+1</span
+					>
+				{/if}
+			</div>
+
+			<div class="flex flex-1 items-end justify-end gap-2">
+				{#if moveCount > 0 && !hasWon}
+					<Button
+						size="sm"
+						variant="outline"
+						onclick={() => initBoard(true)}
+						class="font-semibold text-muted-foreground"
+					>
+						Reset
+					</Button>
+				{/if}
+				<Dialog.Root bind:open={openHelp}>
+					<Dialog.Trigger>
+						{#snippet child({ props })}
+							<Button
+								size="sm"
+								{...props}
+								variant="outline"
+								class="font-semibold text-muted-foreground"
+							>
+								?
+							</Button>
+						{/snippet}
+					</Dialog.Trigger>
+					<Dialog.Content class="font-mono sm:max-w-80">
+						<Logo class="mx-auto size-8" />
+						<Dialog.Header class="sm:text-center">
+							<Dialog.Title>Kubel</Dialog.Title>
+							<Dialog.Description>The 2D rubik's cube daily challenge</Dialog.Description>
+						</Dialog.Header>
+						<div class="text-center">
+							<p class="font-sans">
+								Click and drag the pieces to move them. Win the game by moving all the pieces of the
+								same color next to each other. Use as few moves as possible.
+							</p>
+							<br />
+							<p class="font-sans">New puzzle every day!</p>
+						</div>
+						<Button class="w-full font-bold" onclick={() => (openHelp = false)}>PLAY</Button>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
+		</div>
+
+		<!-- Board -->
+		<div
+			class="mx-auto aspect-square w-full max-w-sm sm:size-96
+		{!isDragging && !hasWon ? 'cursor-grab' : ''}"
+		>
+			<canvas class="size-full select-none" bind:this={canvas}></canvas>
+		</div>
+
+		<!-- Winner -->
+		{#if hasWon}
+			<div class="mt-4 bg-green-500 px-4 py-2 sm:px-0">
+				<p class="text-center text-2xl font-bold text-white">Winner!</p>
+			</div>
+			<div class="flex">
 				<Button
 					size="sm"
-					class="grow focus-visible:z-10"
-					variant="secondary"
-					onclick={copyEmojiBoard}
+					onclick={() => initBoard(true)}
+					variant="outline"
+					class="focus-visible:z-10"
 				>
-					{#if copied}
-						Copied
-					{:else}
-						Copy Emoji Board
-					{/if}
+					Go Again
 				</Button>
-			{/if}
-		</div>
-	{/if}
+				{#if navigator.clipboard}
+					<Button
+						size="sm"
+						class="grow focus-visible:z-10"
+						variant="secondary"
+						onclick={copyEmojiBoard}
+					>
+						{#if copied}
+							Copied
+						{:else}
+							Copy Emoji Board
+						{/if}
+					</Button>
+				{/if}
+			</div>
+		{/if}
 
-	<!-- Footer -->
-	<div class="flex justify-between gap-2 px-4 py-4 sm:px-0">
-		<div class="flex items-start justify-start">
-			<p class="truncate text-xs text-muted-foreground">New puzzle in {timer}</p>
-		</div>
+		<!-- Footer -->
+		<div class="flex justify-between gap-2 px-4 py-4 sm:px-0">
+			<div class="flex items-start justify-start">
+				<p class="truncate text-xs text-muted-foreground">New puzzle in {timer}</p>
+			</div>
 
-		<div class="flex shrink-0 items-start justify-end gap-1">
-			{#each completedColors as color, i}
-				<div
-					style="background-color: {color ? palette[i] : 'transparent'};"
-					class="size-4 border bg-red-500"
-				></div>
-			{/each}
+			<div class="flex shrink-0 items-start justify-end gap-1">
+				{#each completedColors as color, i}
+					<div
+						style="background-color: {color ? palette[i] : 'transparent'};"
+						class="size-4 border"
+					></div>
+				{/each}
+			</div>
 		</div>
+	</div>
+
+	<!-- Links -->
+	<div class="mt-auto flex w-full justify-end gap-4 p-4 pt-0">
+		<Button
+			size="sm"
+			target="_blank"
+			variant="outline"
+			class="h-7 text-muted-foreground"
+			href="https://github.com/jason1610/kubel">GitHub</Button
+		>
+		<Button
+			size="sm"
+			target="_blank"
+			variant="outline"
+			class="h-7 text-muted-foreground"
+			href="https://bsky.app/profile/jason1610.bsky.social">BlueSky</Button
+		>
 	</div>
 </main>
