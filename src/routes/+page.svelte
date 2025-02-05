@@ -3,9 +3,10 @@
 	import seed from 'seed-random';
 	import { onMount } from 'svelte';
 	import Logo from './logo.svelte';
+	import { Confetti } from 'svelte-confetti';
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { Application, Container, Graphics, Rectangle } from 'pixi.js';
+	import { Application, Graphics, Rectangle } from 'pixi.js';
 
 	type Vector = {
 		x: number;
@@ -25,7 +26,7 @@
 		'#A020F0', // 🟪 Purple
 		'#8B4513', // 🟫 Brown
 		'#808080', // ⬜ Gray
-		'#FFA500' // 🟧 Orange
+		'#ff9100' // 🟧 Orange
 	] as const;
 
 	const RANDOM_EMOJIS = [
@@ -57,7 +58,7 @@
 		'🦧'
 	];
 
-	const MIN_COLORS = 4;
+	const MIN_COLORS = 3;
 
 	const MIN_BOARD_SIZE = 4;
 	const MAX_BOARD_SIZE = 7;
@@ -502,7 +503,7 @@
 			'#A020F0': '🟪',
 			'#8B4513': '🟫',
 			'#808080': '⬜',
-			'#FFA500': '🟧'
+			'#ff9100': '🟧'
 		};
 		return colorMap[color] || '⬛';
 	}
@@ -541,7 +542,7 @@
 
 <svelte:window onpointermove={handlePointerMove} onpointerup={handlePointerUp} />
 
-<main class="flex min-h-svh flex-col">
+<main class="flex min-h-svh flex-col overflow-x-hidden">
 	<div class="mx-auto w-fit select-none font-mono sm:pt-12 {isDragging ? 'cursor-grabbing' : ''}">
 		<!-- Header -->
 		<div class="flex justify-center gap-2 px-4 py-4 sm:px-0">
@@ -590,7 +591,7 @@
 						<Logo class="mx-auto size-8" />
 						<Dialog.Header class="sm:text-center">
 							<Dialog.Title>Kubel</Dialog.Title>
-							<Dialog.Description>The 2D rubik's cube daily challenge</Dialog.Description>
+							<Dialog.Description>The daily 2D Rubik's cube challenge</Dialog.Description>
 						</Dialog.Header>
 						<div class="text-center">
 							<p class="font-sans">
@@ -616,22 +617,28 @@
 
 		<!-- Winner -->
 		{#if hasWon}
-			<div class="mt-4 bg-green-500 px-4 py-2 sm:px-0">
+			<div class="relative mt-4 bg-green-500 px-4 py-2 sm:px-0">
+				<div class="absolute- left-0 top-0">
+					<Confetti colorArray={palette} delay={[100, 2000]} cone x={[-1, -2.5]} y={[0.25, 0.75]} />
+				</div>
+				<div class="absolute right-0 top-0">
+					<Confetti colorArray={palette} delay={[100, 2000]} cone x={[1, 2.5]} y={[0.25, 0.75]} />
+				</div>
 				<p class="text-center text-2xl font-bold text-white">Winner!</p>
 			</div>
-			<div class="flex">
+			<div class="mt-4 flex">
 				<Button
 					size="sm"
 					onclick={() => initBoard(true)}
 					variant="outline"
-					class="focus-visible:z-10"
+					class="font-semibold focus-visible:z-10"
 				>
 					Go Again
 				</Button>
 				{#if navigator.clipboard}
 					<Button
 						size="sm"
-						class="grow focus-visible:z-10"
+						class="grow font-semibold focus-visible:z-10"
 						variant="secondary"
 						onclick={copyEmojiBoard}
 					>
