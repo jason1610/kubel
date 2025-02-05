@@ -1,0 +1,8 @@
+{
+	"workbench.colorCustomizations": {
+		"editor.selectionBackground": "#32aba97f",
+		"editor.selectionHighlightBackground": "#25227d6a",
+		"minimap.background": "#00000000",
+		"scrollbar.shadow": "#00000000"
+	}
+}
