@@ -54,5 +54,8 @@
 		"pixi.js": "^8.7.3",
 		"seed-random": "^2.2.0",
 		"tailwindcss-animate": "^1.0.7"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "^4.34.4"
 	}
 }
