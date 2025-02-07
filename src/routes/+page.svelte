@@ -84,7 +84,7 @@
 	let timer: string = $state('');
 	let moveCount: number = $state(0);
 	let copied: boolean = $state(false);
-	let hasWon: boolean = $state(false);
+	let solved: boolean = $state(false);
 	let openHelp: boolean = $state(false);
 	let completedColors: boolean[] = $state([]);
 
@@ -256,7 +256,7 @@
 			}
 		}
 
-		hasWon = completedColors.includes(false) ? false : true;
+		solved = completedColors.includes(false) ? false : true;
 	}
 
 	function animateSelectPiece(piece: Graphics, color: string) {
@@ -300,7 +300,7 @@
 
 	// Sets all variables for initiating a move
 	function handlePointerDown(e: PointerEvent, id: string) {
-		if (hasWon) return;
+		if (solved) return;
 		isDragging = true;
 		lockedAxis = null;
 
@@ -408,7 +408,7 @@
 	async function initBoard(restart: boolean = false) {
 		// Reset all stats
 		moveCount = 0;
-		hasWon = false;
+		solved = false;
 
 		// First calc what the initial map looks like
 		const now = new Date().toISOString().split('T')[0];
@@ -552,7 +552,7 @@
 			<div
 				class="relative flex h-14 min-w-14 shrink-0 items-center justify-center border bg-muted p-4 text-4xl font-bold
 			{!moveCount ? 'text-muted-foreground' : 'text-foreground'} 
-			{hasWon ? 'bg-green-500 text-white' : ''}"
+			{solved ? 'bg-green-500 text-white' : ''}"
 			>
 				{moveCount}
 				{#if (isDragging && moveOffset.x !== 0) || moveOffset.y !== 0}
@@ -564,7 +564,7 @@
 			</div>
 
 			<div class="flex flex-1 items-end justify-end gap-2">
-				{#if moveCount > 0 && !hasWon}
+				{#if moveCount > 0 && !solved}
 					<Button
 						size="sm"
 						variant="outline"
@@ -610,21 +610,25 @@
 		<!-- Board -->
 		<div
 			class="mx-auto aspect-square w-full max-w-sm sm:size-96
-		{!isDragging && !hasWon ? 'cursor-grab' : ''}"
+			{!isDragging && !solved ? 'cursor-grab' : ''}"
 		>
-			<canvas class="size-full select-none" bind:this={canvas}></canvas>
+			<canvas
+				bind:this={canvas}
+				class="size-full select-none"
+				oncontextmenu={(e) => e.preventDefault()}
+			></canvas>
 		</div>
 
-		<!-- Winner -->
-		{#if hasWon}
+		<!-- Solved -->
+		{#if solved}
 			<div class="relative mt-4 bg-green-500 px-4 py-2 sm:px-0">
-				<div class="absolute- left-0 top-0">
+				<div class="absolute left-0 top-0 hidden sm:block">
 					<Confetti colorArray={palette} delay={[100, 2000]} cone x={[-1, -2.5]} y={[0.25, 0.75]} />
 				</div>
-				<div class="absolute right-0 top-0">
+				<div class="absolute right-0 top-0 hidden sm:block">
 					<Confetti colorArray={palette} delay={[100, 2000]} cone x={[1, 2.5]} y={[0.25, 0.75]} />
 				</div>
-				<p class="text-center text-2xl font-bold text-white">Winner!</p>
+				<p class="text-center text-2xl font-bold text-white">Solved!</p>
 			</div>
 			<div class="mt-4 flex">
 				<Button
@@ -633,7 +637,7 @@
 					variant="outline"
 					class="font-semibold focus-visible:z-10"
 				>
-					Go Again
+					Play Again
 				</Button>
 				{#if navigator.clipboard}
 					<Button
@@ -653,8 +657,8 @@
 		{/if}
 
 		<!-- Footer -->
-		<div class="flex justify-between gap-2 px-4 py-4 sm:px-0">
-			<div class="flex items-start justify-start">
+		<div class="flex w-full flex-wrap-reverse justify-between gap-2 px-4 py-4 sm:px-0">
+			<div class="flex items-start justify-start truncate">
 				<p class="truncate text-xs text-muted-foreground">New puzzle in {timer}</p>
 			</div>
 
