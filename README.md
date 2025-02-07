@@ -1,38 +1,26 @@
-# sv
+![](./static/favicon.png)
+Kubel
+=====
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+### [kubel.io](https://kubel.io) --- The Daily 2D Rubik's Cube Challenge
 
-## Creating a project
+Kubel is a minimalist puzzle game where you slide pieces to solve a unique challenge each day. The goal is simple: move all pieces of the same color next to each other using as few moves as possible.
 
-If you're seeing this, you've probably already done this step. Congrats!
+### How to Play
 
-```bash
-# create a new project in the current directory
-npx sv create
+-   Click and drag to move entire rows or columns.
 
-# create a new project in my-app
-npx sv create my-app
-```
+-   Pieces wrap around the edges of the grid.
 
-## Developing
+-   Solve the puzzle in the fewest moves possible.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Potential Roadmap
 
-```bash
-npm run dev
+🚀 **Local Storage** --- Save play state.\
+🎨 **Free Mode** --- Play endlessly with random scrambles, colors, and sizes.\
+🛠 **Puzzle Builder** --- Create and share custom puzzles.\
+🏆 **Leaderboards** --- Compete for the best solutions.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+The core logic is in `page.svelte`. This is a remake of one of my old projects, now refined for a daily challenge format.
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Try it out: [kubel.io](https://kubel.io)
