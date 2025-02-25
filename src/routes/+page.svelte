@@ -687,7 +687,7 @@
 			target="_blank"
 			variant="outline"
 			class="h-7 text-muted-foreground"
-			href="https://bsky.app/profile/jason1610.bsky.social">BlueSky</Button
+			href="https://bsky.app/profile/1610.io">BlueSky</Button
 		>
 	</div>
 </main>
